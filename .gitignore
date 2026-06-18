@@ -1,0 +1,23 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Local configuration
+.env
+
+# Flask instance folder
+instance/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE settings
+.vscode/
+
+# macOS
+.DS_Store
