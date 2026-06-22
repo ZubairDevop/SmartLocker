@@ -12,7 +12,6 @@ from app.models.locker_cell import LockerCell
 from app.constants import (
     REQUEST_PENDING,
     REQUEST_REJECTED,
-    REQUEST_APPROVED,
     REQUEST_READY,
     REQUEST_COMPLETED,
     CELL_AVAILABLE,
