@@ -32,7 +32,7 @@ def test_user_dashboard_requires_login():
     assert response.status_code == 302
     assert "/login" in response.location
 
-## User can access dashboard and request replacement laptop
+# User can access dashboard and request replacement laptop
 def test_logged_in_user_can_access_dashboard():
 
     app = create_app()

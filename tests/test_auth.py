@@ -1,8 +1,8 @@
 from app import create_app
-#these test are for Unit Testing, Functional Testing ,Authentication Testing and Regression Testing
+# these test are for Unit Testing, Functional Testing ,Authentication Testing and Regression Testing
 
 
-#Pytest checks Flask app loads successfully.
+# Pytest checks Flask app loads successfully.
 def test_home_page_loads():
     app = create_app()
     app.config["TESTING"] = True
