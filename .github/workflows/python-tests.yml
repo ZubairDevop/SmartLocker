@@ -1,23 +1,18 @@
 name: SmartLocker Tests
-# GitHub Actions YML
-# runs pipe when code is pushed to main and pull request created against main
+
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
 
 jobs:
-
   test:
-# GitHub to create a temporary Linux machine to ensure app runs on fresh machine
     runs-on: ubuntu-latest
 
     steps:
-# Downloads repository onto the GitHub
       - name: Checkout Code
         uses: actions/checkout@v4
 
