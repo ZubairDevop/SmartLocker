@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+Collection Code | CGI Smart Locker
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm border-0 text-center">
+
+            <div class="card-body p-5">
+
+                <h2 class="mb-3">Collection Code</h2>
+
+                <div class="display-4 fw-bold text-primary mb-3">
+                    {{ collection_code }}
+                </div>
+
+                <p>
+                    Locker Cell:
+                    <strong>Cell {{ cell_number }}</strong>
+                </p>
+
+                <p>
+                    Replacement Laptop:
+                    <strong>{{ laptop.manufacturer }} {{ laptop.model }}</strong>
+                </p>
+
+                <div class="alert alert-warning mt-4">
+                    This code is shown only once. Please record it now.
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    Please place faulty laptop in locker once replacement laptop is collected. Thanks.
+                </div>
+
+                <a href="{{ url_for('user.dashboard') }}" class="btn btn-primary">
+                    Back to Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+Request Replacement | CGI Smart Locker
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Request Replacement Laptop</h2>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <p>
+            Your assigned laptop category:
+            <span class="badge bg-primary">
+                {{ current_user.assigned_category }}
+            </span>
+        </p>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                <label class="form-label">Replacement Laptop Category</label>
+
+                {% if current_user.assigned_category == "Standard" %}
+
+                    <select class="form-select" name="requested_category">
+                        <option value="Standard" selected>Standard Laptop</option>
+                        <option value="Executive" disabled>Executive Laptop</option>
+                    </select>
+
+                {% else %}
+
+                    <select class="form-select" name="requested_category">
+                        <option value="Standard" disabled>Standard Laptop</option>
+                        <option value="Executive" selected>Executive Laptop</option>
+                    </select>
+
+                {% endif %}
+            </div>
+
+            <div class="alert alert-info">
+                You can only choose like for like laptop.
+            </div>
+
+            <div class="mb-3">
+                {{ form.issue_description.label(class="form-label") }}
+                {{ form.issue_description(class="form-control", rows="5") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.priority.label(class="form-label") }}
+                {{ form.priority(class="form-select") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Submit Request
+            </button>
+
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

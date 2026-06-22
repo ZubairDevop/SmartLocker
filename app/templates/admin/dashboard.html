@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard | CGI Smart Locker
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<p class="lead">
+    {{ current_user.first_name }} {{ current_user.last_name }}
+</p>
+<p class="text-muted mb-4">
+    {{ current_user.job_title }} |
+    {{ current_user.department }}
+</p>
+
+<div class="row g-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Pending Requests</h5>
+                <h2 class="text-primary">{{ pending_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Ready for Collection</h5>
+                <h2 class="text-success">{{ ready_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Completed Requests</h5>
+                <h2 class="text-secondary">{{ completed_requests }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-4 mt-2">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Available Cells</h5>
+                <h2 class="text-primary">{{ available_cells }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Reserved Cells</h5>
+                <h2 class="text-warning">{{ reserved_cells }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5>Repair Cells</h5>
+                <h2 class="text-danger">{{ repair_cells }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <h4>Quick Actions</h4>
+
+        <a href="{{ url_for('admin.requests') }}" class="btn btn-primary me-2 mt-2">Manage Requests</a>
+        <a href="{{ url_for('admin.laptops') }}" class="btn btn-outline-primary me-2 mt-2">Manage Laptop Models</a>
+        <a href="{{ url_for('admin.locker') }}" class="btn btn-outline-primary me-2 mt-2">Manage Smart Locker</a>
+        <a href="{{ url_for('admin.users') }}" class="btn btn-outline-primary mt-2">Users Record</a>
+    </div>
+
+</div>
+
+{% endblock %}

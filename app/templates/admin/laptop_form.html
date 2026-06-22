@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ title }} | CGI Smart Locker
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">{{ title }}</h2>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.manufacturer.label(class="form-label") }}
+                {{ form.manufacturer(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.model.label(class="form-label") }}
+                {{ form.model(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.category.label(class="form-label") }}
+                {{ form.category(class="form-select") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+
+            <a href="{{ url_for('admin.laptops') }}" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

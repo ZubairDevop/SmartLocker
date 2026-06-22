@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}
+User Dashboard | CGI Smart Locker
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">User Dashboard</h2>
+
+<p class="lead">
+    {{ current_user.first_name }} {{ current_user.last_name }}
+</p>
+<p class="text-muted mb-4">
+    {{ current_user.job_title }} |
+    {{ current_user.department }}
+</p>
+
+<div class="row g-4">
+
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h5>Assigned Laptop</h5>
+
+                {% if current_user.current_laptop %}
+                    <p class="mb-1">
+                        <strong>{{ current_user.current_laptop.manufacturer }}</strong>
+                        {{ current_user.current_laptop.model }}
+                    </p>
+
+                    <p class="mb-0">
+                        Category:
+                        <span class="badge bg-primary">
+                            {{ current_user.assigned_category }}
+                        </span>
+                    </p>
+                {% else %}
+                    <p>No laptop assigned.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+
+                <h5>Current Request</h5>
+
+                {% if active_request %}
+                    <p>Status:
+                        <span class="badge bg-warning text-dark">
+                            {{ active_request.status }}
+                        </span>
+                    </p>
+                    <p>{{ active_request.issue_description }}</p>
+                {% else %}
+                    <p>No active request.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-body">
+
+        <h4>Actions</h4>
+
+        <a href="{{ url_for('user.create_request') }}" class="btn btn-primary mt-2">
+            Request Replacement Laptop
+        </a>
+
+{% if active_request and active_request.status == "Ready for Collection" and not active_request.collection_viewed %}
+
+    <a href="{{ url_for('user.view_collection_code', request_id=active_request.id) }}"
+       class="btn btn-success mt-2">
+        View Collection Code
+    </a>
+
+{% else %}
+
+    <button class="btn btn-outline-secondary mt-2" disabled>
+        View Collection Code
+    </button>
+
+{% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Manage Laptop Models</h2>
+
+<a href="{{ url_for('admin.add_laptop') }}"
+   class="btn btn-primary mb-3">
+
+    Add Laptop Model
+
+</a>
+
+<table class="table">
+
+    <thead>
+
+        <tr>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for laptop in laptops %}
+
+        <tr>
+
+            <td>{{ laptop.manufacturer }}</td>
+            <td>{{ laptop.model }}</td>
+            <td>{{ laptop.category }}</td>
+            <td>{{ laptop.status }}</td>
+            <td>
+    <a href="{{ url_for('admin.edit_laptop', laptop_id=laptop.id) }}"
+       class="btn btn-sm btn-warning">
+        Edit
+    </a>
+
+    {% if laptop.status != "Retired" %}
+        <a href="{{ url_for('admin.retire_laptop', laptop_id=laptop.id) }}"
+           class="btn btn-sm btn-danger">
+            Retire
+        </a>
+    {% else %}
+        <span class="text-muted">Retired</span>
+    {% endif %}
+</td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
