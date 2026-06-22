@@ -7,7 +7,7 @@ def test_home_page_loads():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -22,7 +22,7 @@ def test_login_page_loads():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -37,7 +37,7 @@ def test_valid_user_login():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -59,7 +59,7 @@ def test_invalid_login_rejected():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -82,7 +82,7 @@ def test_admin_dashboard_requires_login():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -102,7 +102,7 @@ def test_valid_admin_login():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 
@@ -126,7 +126,7 @@ def test_user_cannot_access_admin_dashboard():
     app = create_app()
     app.config["TESTING"] = True
     app.config["WTF_CSRF_ENABLED"] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
+    
 
     client = app.test_client()
 

@@ -26,6 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Create Database
+        run: |
+          mkdir -p instance
+          python seed.py
+
       - name: Run Tests
         run: |
           python -m pytest
