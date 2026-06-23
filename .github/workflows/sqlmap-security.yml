@@ -1,7 +1,13 @@
 name: SQLMap Security Test
 
+# Trigger pipeline automatically
 on:
-  workflow_dispatch:
+
+  # Run when code is pushed to main branch
+  push:
+    branches:
+      - main
+
 
 jobs:
   sqlmap-test:
