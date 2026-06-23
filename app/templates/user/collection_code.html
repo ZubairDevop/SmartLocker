@@ -1,3 +1,4 @@
+<!-- Inherit shared layout, navigation and styling -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -10,34 +11,41 @@ Collection Code | CGI Smart Locker
 
     <div class="col-md-6">
 
+        <!-- Collection code card -->
         <div class="card shadow-sm border-0 text-center">
 
             <div class="card-body p-5">
 
                 <h2 class="mb-3">Collection Code</h2>
 
+                <!-- One-time collection code generated during approval -->
                 <div class="display-4 fw-bold text-primary mb-3">
                     {{ collection_code }}
                 </div>
 
+                <!-- Assigned locker cell -->
                 <p>
                     Locker Cell:
                     <strong>Cell {{ cell_number }}</strong>
                 </p>
 
+                 <!-- Replacement laptop allocated to the request -->
                 <p>
                     Replacement Laptop:
                     <strong>{{ laptop.manufacturer }} {{ laptop.model }}</strong>
                 </p>
 
+                <!-- One-time code warning -->
                 <div class="alert alert-warning mt-4">
                     This code is shown only once. Please record it now.
                 </div>
                 
+                <!-- User instruction -->
                 <div class="alert alert-info mt-3">
                     Please place faulty laptop in locker once replacement laptop is collected. Thanks.
                 </div>
 
+                <!-- Return to dashboard -->
                 <a href="{{ url_for('user.dashboard') }}" class="btn btn-primary">
                     Back to Dashboard
                 </a>

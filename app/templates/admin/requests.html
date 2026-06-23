@@ -1,3 +1,4 @@
+<!-- Inherit common application layout -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,6 +9,7 @@ Manage Requests | CGI Smart Locker
 
 <h2 class="mb-4">Manage Requests</h2>
 
+<!-- Table displaying all replacement requests -->
 <table class="table table-striped table-hover shadow-sm bg-white">
 
     <thead class="table-primary">
@@ -26,6 +28,7 @@ Manage Requests | CGI Smart Locker
 
     <tbody>
 
+         <!-- Loop through all requests returned from admin.py -->
         {% for request in requests %}
 
 <tr>
@@ -36,6 +39,7 @@ Manage Requests | CGI Smart Locker
     <td>{{ request.status }}</td>
     <td>{{ request.issue_description }}</td>
 
+    <!-- Display allocated locker cell -->
     <td>
         {% if request.locker_cell %}
             Cell {{ request.locker_cell.cell_number }}
@@ -44,6 +48,7 @@ Manage Requests | CGI Smart Locker
         {% endif %}
     </td>
 
+    <!-- Display whether collection code has been viewed -->
     <td>
         {% if request.collection_viewed %}
             Yes
@@ -53,20 +58,28 @@ Manage Requests | CGI Smart Locker
     </td>
 
     <td>
+        <!-- Only pending requests can be approved or rejected -->
         {% if request.status == "Pending" %}
 
             <a href="{{ url_for('admin.approve_request', request_id=request.id) }}"
-               class="btn btn-sm btn-success">
-                Approve
+                class="btn btn-sm btn-success"
+                data-confirm="Have you reviewed user request thoroughly?">
+
+                    Approve
+
             </a>
 
             <a href="{{ url_for('admin.reject_request', request_id=request.id) }}"
-               class="btn btn-sm btn-danger">
-                Reject
+                class="btn btn-sm btn-danger"
+                data-confirm="Have you reviewed user request thoroughly?">
+
+                    Reject
+
             </a>
 
         {% else %}
 
+        <!-- No actions available once request processed -->
             <span class="text-muted">No action</span>
 
         {% endif %}

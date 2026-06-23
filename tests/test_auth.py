@@ -31,7 +31,7 @@ def test_login_page_loads():
     assert response.status_code == 200
     assert b"Login" in response.data
 
-# valid user login test
+# valid user authentication and login test
 def test_valid_user_login():
 
     app = create_app()
@@ -53,7 +53,7 @@ def test_valid_user_login():
     assert response.status_code == 200
     assert b"User Dashboard" in response.data    
 
-# an invalid login test.
+# an invalid authentication enforcement and login rejects
 def test_invalid_login_rejected():
 
     app = create_app()
@@ -120,7 +120,7 @@ def test_valid_admin_login():
 
 
 # this test is to prove RABC (Role Based Access Control)
-# registered standard user can access Admin dashboard
+# registered standard user cannot access Admin dashboard
 def test_user_cannot_access_admin_dashboard():
 
     app = create_app()

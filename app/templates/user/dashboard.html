@@ -1,3 +1,4 @@
+<!-- Inherit common layout and navigation from base template -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,9 +9,12 @@ User Dashboard | CGI Smart Locker
 
 <h2 class="mb-4">User Dashboard</h2>
 
+<!-- Display logged-in user's name -->
 <p class="lead">
     {{ current_user.first_name }} {{ current_user.last_name }}
 </p>
+
+<!-- Display user's job title and department -->
 <p class="text-muted mb-4">
     {{ current_user.job_title }} |
     {{ current_user.department }}
@@ -18,12 +22,14 @@ User Dashboard | CGI Smart Locker
 
 <div class="row g-4">
 
+    <!-- Assigned laptop information card -->
     <div class="col-md-6">
         <div class="card shadow-sm border-0">
             <div class="card-body">
 
                 <h5>Assigned Laptop</h5>
 
+                <!-- Display currently assigned laptop -->
                 {% if current_user.current_laptop %}
                     <p class="mb-1">
                         <strong>{{ current_user.current_laptop.manufacturer }}</strong>
@@ -37,6 +43,8 @@ User Dashboard | CGI Smart Locker
                         </span>
                     </p>
                 {% else %}
+
+                    <!-- Display if no laptop has been assigned -->
                     <p>No laptop assigned.</p>
                 {% endif %}
 
@@ -44,12 +52,14 @@ User Dashboard | CGI Smart Locker
         </div>
     </div>
 
+    <!-- Current replacement request card -->
     <div class="col-md-6">
         <div class="card shadow-sm border-0">
             <div class="card-body">
 
                 <h5>Current Request</h5>
 
+                <!-- Display active request information -->
                 {% if active_request %}
                     <p>Status:
                         <span class="badge bg-warning text-dark">
@@ -67,6 +77,7 @@ User Dashboard | CGI Smart Locker
 
 </div>
 
+<!-- User action section -->
 <div class="card shadow-sm border-0 mt-4">
 
     <div class="card-body">
@@ -77,6 +88,7 @@ User Dashboard | CGI Smart Locker
             Request Replacement Laptop
         </a>
 
+<!-- Collection code available only when request is ready -->
 {% if active_request and active_request.status == "Ready for Collection" and not active_request.collection_viewed %}
 
     <a href="{{ url_for('user.view_collection_code', request_id=active_request.id) }}"
@@ -86,6 +98,7 @@ User Dashboard | CGI Smart Locker
 
 {% else %}
 
+     <!-- Button disabled until collection code becomes available -->
     <button class="btn btn-outline-secondary mt-2" disabled>
         View Collection Code
     </button>

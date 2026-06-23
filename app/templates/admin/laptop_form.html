@@ -1,3 +1,4 @@
+<!-- Inherit common application layout -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -12,20 +13,25 @@
 
     <div class="card-body">
 
-        <form method="POST">
+        <form method="POST"
+            data-confirm="Have you selected correct Laptop Manufacturer, Model and Category">
 
+            <!-- CSRF protection token -->
             {{ form.hidden_tag() }}
 
+            <!-- Laptop manufacturer field -->
             <div class="mb-3">
                 {{ form.manufacturer.label(class="form-label") }}
                 {{ form.manufacturer(class="form-control") }}
             </div>
 
+            <!-- Laptop model field -->
             <div class="mb-3">
                 {{ form.model.label(class="form-label") }}
                 {{ form.model(class="form-control") }}
             </div>
 
+            <!-- Laptop category selection -->
             <div class="mb-3">
                 {{ form.category.label(class="form-label") }}
                 {{ form.category(class="form-select") }}
@@ -35,6 +41,7 @@
                 Save
             </button>
 
+             <!-- Return to laptop management page -->
             <a href="{{ url_for('admin.laptops') }}" class="btn btn-secondary">
                 Cancel
             </a>

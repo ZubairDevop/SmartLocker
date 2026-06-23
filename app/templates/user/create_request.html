@@ -1,3 +1,4 @@
+<!-- Inherit shared layout, navigation and styling -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,24 +9,30 @@ Request Replacement | CGI Smart Locker
 
 <h2 class="mb-4">Request Replacement Laptop</h2>
 
+<!-- Request form container -->
 <div class="card shadow-sm border-0">
 
     <div class="card-body">
 
         <p>
+            <!-- Display user's assigned laptop category -->
             Your assigned laptop category:
             <span class="badge bg-primary">
                 {{ current_user.assigned_category }}
             </span>
         </p>
 
-        <form method="POST">
-
+        <!-- Replacement request form -->
+        <form method="POST"
+            data-confirm="Please ensure you have entered full description of faulty laptop before submitting this request">
+            <!-- CSRF protection token -->
             {{ form.hidden_tag() }}
 
+            <!-- Category selection -->
             <div class="mb-3">
                 <label class="form-label">Replacement Laptop Category</label>
 
+                <!-- Standard users can only request Standard laptops -->
                 {% if current_user.assigned_category == "Standard" %}
 
                     <select class="form-select" name="requested_category">
@@ -35,6 +42,7 @@ Request Replacement | CGI Smart Locker
 
                 {% else %}
 
+                <!-- Executive users can only request Executive laptops -->
                     <select class="form-select" name="requested_category">
                         <option value="Standard" disabled>Standard Laptop</option>
                         <option value="Executive" selected>Executive Laptop</option>
@@ -43,20 +51,24 @@ Request Replacement | CGI Smart Locker
                 {% endif %}
             </div>
 
+            <!-- Business rule reminder -->
             <div class="alert alert-info">
                 You can only choose like for like laptop.
             </div>
 
+            <!-- User enters laptop fault description -->
             <div class="mb-3">
                 {{ form.issue_description.label(class="form-label") }}
                 {{ form.issue_description(class="form-control", rows="5") }}
             </div>
 
+            <!-- User selects request priority -->
             <div class="mb-3">
                 {{ form.priority.label(class="form-label") }}
                 {{ form.priority(class="form-select") }}
             </div>
 
+            <!-- Submit replacement request -->
             <button type="submit" class="btn btn-primary">
                 Submit Request
             </button>

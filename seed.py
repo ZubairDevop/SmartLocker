@@ -1,18 +1,26 @@
 
 # SmartLocker seed.py
+
+# Importing Flask application and database
 from app import create_app, db
+
+# werkzeug.security will hash user passwords before storing in database
 from werkzeug.security import generate_password_hash
 
+# Importing application database models
 from app.models.user import User
 from app.models.laptop_model import LaptopModel
 from app.models.locker import Locker
 from app.models.locker_cell import LockerCell
 from app.models.request import Request
 
+#Importing application all constants such as roles, statuses and categories
 from app.constants import *
 
 app = create_app()
 
+# Seed data for users
+# Contains admin and standard users across multiple departments
 users_data = [
 ("Zubair","Ahmad","zubaira","IT","IT Support Engineer",CATEGORY_STANDARD,ROLE_ADMIN),
 ("Uzair","Ahmad","uzaira","IT","IT Support Engineer",CATEGORY_STANDARD,ROLE_ADMIN),
@@ -61,6 +69,7 @@ users_data = [
 ("Emma","Frost","emmaf","HR","HR Administrator",CATEGORY_STANDARD,ROLE_USER),
 ]
 
+# seeding data for laptops
 laptops_data=[
 ("Dell","Latitude 5550",CATEGORY_STANDARD),    
 ("Fujitsu","E5410",CATEGORY_STANDARD),
@@ -74,16 +83,23 @@ laptops_data=[
 ("Apple","MacBook Pro 16",CATEGORY_EXECUTIVE),
 ]
 
+# remove existing table and then create again when seed.py is executed
 with app.app_context():
     db.drop_all()
     db.create_all()
 
+# Creating laptop model records
+# Each laptop is added to the LaptopModel table
     laptops=[]
     for mfr,model,cat in laptops_data:
         l=LaptopModel(manufacturer=mfr,model=model,category=cat,status=LAPTOP_AVAILABLE)
         db.session.add(l); laptops.append(l)
     db.session.flush()
 
+# this script create user accounts
+# Assign a default laptop based on user's category
+# Executive users receive an Executive laptop
+# Standard users receive a Standard laptop
     users=[]
     std=laptops[0]
     exe=laptops[7]
@@ -94,12 +110,14 @@ with app.app_context():
                job_title=title,
                assigned_category=cat,
                role=role,
+               # Store password securely using hashing
                password_hash=generate_password_hash("Password123!"),
                current_laptop_id=(exe.id if cat==CATEGORY_EXECUTIVE else std.id))
         db.session.add(u); users.append(u)
 
     db.session.flush()
-
+    
+    # Creating a Smart Locker
     locker=Locker(locker_name="Smart Locker")
     db.session.add(locker)
     db.session.flush()
@@ -114,9 +132,11 @@ with app.app_context():
         db.session.add(LockerCell(locker_id=locker.id,cell_number=cell,laptop_id=None,status=CELL_EMPTY)); cell+=1
     db.session.flush()
 
-
+ # this code Retrieve all locker cells for request allocation
     cells = LockerCell.query.all()
 
+    # populating status in the Request table
+    # this will provides a mix of Pending, Ready, Completed, Rejected and Cancelled requests
     statuses = [
         REQUEST_PENDING,
         REQUEST_PENDING,
@@ -130,6 +150,8 @@ with app.app_context():
         REQUEST_CANCELLED
     ]
 
+    # both codes are important as it separate users by category to ensure requests match
+    # the user's assigned laptop category, so executive can only request exec laptop and standard user can only request standard
     standard_users = [
         user for user in users
         if user.role == ROLE_USER and user.assigned_category == CATEGORY_STANDARD
@@ -140,6 +162,7 @@ with app.app_context():
         if user.role == ROLE_USER and user.assigned_category == CATEGORY_EXECUTIVE
     ]
 
+# dumpy request data will be populated against these users
     request_users = [
         standard_users[0],
         standard_users[1],
@@ -153,6 +176,9 @@ with app.app_context():
         executive_users[1],
     ]
 
+    # this loop will create replacement requests
+    # Each request is linked to a user and assigned a status
+    # Rejected requests do not receive a locker allocation
     for i, status in enumerate(statuses):
 
         selected_user = request_users[i]

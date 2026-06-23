@@ -1,3 +1,4 @@
+<!-- Inherit common application layout -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,6 +9,7 @@ Users Record | CGI Smart Locker
 
 <h2 class="mb-4">Users Record</h2>
 
+<!-- Table displaying all users and their currently assigned laptops -->
 <table class="table table-striped table-hover shadow-sm bg-white">
 
     <thead class="table-primary">
@@ -24,6 +26,7 @@ Users Record | CGI Smart Locker
 
     <tbody>
 
+        <!-- Loop through all users returned from admin.py -->
         {% for user in users %}
 
         <tr>
@@ -33,11 +36,14 @@ Users Record | CGI Smart Locker
             <td>{{ user.department }}</td>
             <td>{{ user.assigned_category }}</td>
 
+            <!-- Current laptop assigned to the user -->
             <td>
                 {% if user.current_laptop %}
                     {{ user.current_laptop.manufacturer }}
                     {{ user.current_laptop.model }}
                 {% else %}
+
+                <!-- Display if no laptop is currently assigned -->
                     <span class="text-muted">No laptop assigned</span>
                 {% endif %}
             </td>

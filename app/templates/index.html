@@ -1,3 +1,4 @@
+<!-- Inherits the common application layout from base.html -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -6,6 +7,7 @@ CGI Smart Locker
 
 {% block content %}
 
+<!-- Bootstrap used for application welcome content and to centre content on the page -->
 <div class="row justify-content-center mt-5">
 
     <div class="col-md-8 text-center">
@@ -14,6 +16,7 @@ CGI Smart Locker
 
             <div class="card-body p-5">
 
+                <!-- Smart Locker icon -->
                 <div class="d-flex justify-content-center align-items-center mb-4">
 
     <i class="bi bi-laptop display-1 text-primary me-3"></i>
@@ -25,6 +28,7 @@ CGI Smart Locker
                     Secure laptop replacement system for CGI Partners.
                 </p>
 
+                <!-- Login button redirects users to authentication page -->
                 <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg mt-3">
                     Login
                 </a>

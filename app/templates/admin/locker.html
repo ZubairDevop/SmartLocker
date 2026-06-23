@@ -1,3 +1,4 @@
+<!-- Inherit common application layout -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -10,16 +11,19 @@ Smart Locker | CGI Smart Locker
 
 <div class="row">
 
+     <!-- Loop through all locker cells -->
     {% for cell in cells %}
 
         <div class="col-md-3 mb-4">
 
+            <!-- Individual locker cell card -->
             <div class="card shadow-sm border-0">
 
                 <div class="card-body">
 
                     <h5>Cell {{ cell.cell_number }}</h5>
 
+                    <!-- Display laptop assigned to locker cell -->
                     {% if cell.laptop %}
 
                         <p class="mb-1">
@@ -27,6 +31,7 @@ Smart Locker | CGI Smart Locker
                             {{ cell.laptop.model }}
                         </p>
 
+                         <!-- Display laptop category -->
                         <p class="mb-1">
                             <span class="badge bg-secondary">
                                 {{ cell.laptop.category }}
@@ -35,11 +40,15 @@ Smart Locker | CGI Smart Locker
 
                     {% else %}
 
+                     <!-- Display if no laptop is assigned -->
                         <p class="text-muted">Empty Cell</p>
 
                     {% endif %}
 
+                     <!-- Display locker cell status using colour-coded badges -->
                     {% if cell.status == "Available" %}
+
+                    <!-- Cell contains available replacement laptop -->
                         <span class="badge bg-success">{{ cell.status }}</span>
                         <div class="mt-3">
     <a href="{{ url_for('admin.edit_locker_cell', cell_id=cell.id) }}"
@@ -48,6 +57,8 @@ Smart Locker | CGI Smart Locker
     </a>
 </div>
                     {% elif cell.status == "Reserved" %}
+
+                    <!-- Cell allocated to approved request -->
                         <span class="badge bg-warning text-dark">{{ cell.status }}</span>
                         <div class="mt-3">
     <a href="{{ url_for('admin.edit_locker_cell', cell_id=cell.id) }}"
@@ -56,6 +67,8 @@ Smart Locker | CGI Smart Locker
     </a>
 </div>
                     {% elif cell.status == "Repair" %}
+
+                    <!-- Cell contains faulty laptop awaiting repair -->
                         <span class="badge bg-danger">{{ cell.status }}</span>
                         <div class="mt-3">
     <a href="{{ url_for('admin.edit_locker_cell', cell_id=cell.id) }}"
@@ -64,7 +77,10 @@ Smart Locker | CGI Smart Locker
     </a>
 </div>
                     {% else %}
+                     <!-- Empty locker cell -->
                         <span class="badge bg-secondary">{{ cell.status }}</span>
+
+                        <!-- Edit locker cell -->
                         <div class="mt-3">
     <a href="{{ url_for('admin.edit_locker_cell', cell_id=cell.id) }}"
        class="btn btn-sm btn-outline-primary">

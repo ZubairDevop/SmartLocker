@@ -1,3 +1,8 @@
+# This file contains all administrator routes for the Smart Locker application.
+# Admin users can view dashboard statistics, manage replacement requests,
+# approve/reject requests, manage laptop models, manage locker cells
+# and view users with their assigned laptops.
+
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from app.models.user import User
@@ -38,15 +43,15 @@ def dashboard():
 
     if current_user.role != ROLE_ADMIN:
         return "Access denied", 403
-
+# Count request statuses to display on dashboard cards.
     pending_requests = Request.query.filter_by(status=REQUEST_PENDING).count()
     ready_requests = Request.query.filter_by(status=REQUEST_READY).count()
     completed_requests = Request.query.filter_by(status=REQUEST_COMPLETED).count()
-
+# Count locker cell statuses to display on dashboard cards.
     available_cells = LockerCell.query.filter_by(status=CELL_AVAILABLE).count()
     reserved_cells = LockerCell.query.filter_by(status=CELL_RESERVED).count()
     repair_cells = LockerCell.query.filter_by(status=CELL_REPAIR).count()
-
+# # Count laptop model statuses to display on dashboard cards
     available_laptops = LaptopModel.query.filter_by(status=LAPTOP_AVAILABLE).count()
     repair_laptops = LaptopModel.query.filter_by(status=LAPTOP_REPAIR).count()
 
@@ -62,7 +67,7 @@ def dashboard():
         repair_laptops=repair_laptops
     )
 
-
+# Displays all replacement requests for admin. Requests are sorted by newest first.
 @admin.route("/requests")
 @login_required
 def requests():
@@ -79,11 +84,16 @@ def requests():
         requests=all_requests
     )
 
+# Generates a random 6-character alphanumeric collection code.
+# This code is used by the user to collect their replacement laptop.
 def generate_collection_code():
     characters = string.ascii_uppercase + string.digits
     return "".join(random.choice(characters) for _ in range(6))
 
 
+# Approves a replacement request.
+# Finds an available locker cell matching the requested laptop category,
+# reserves the cell, generates a collection code and marks the request as ready.
 @admin.route("/requests/<int:request_id>/approve")
 @login_required
 def approve_request(request_id):
@@ -118,7 +128,7 @@ def approve_request(request_id):
 
     return redirect(url_for("admin.requests"))
 
-
+# Rejects a replacement request and updates its status.
 @admin.route("/requests/<int:request_id>/reject")
 @login_required
 def reject_request(request_id):
@@ -136,7 +146,7 @@ def reject_request(request_id):
 
     return redirect(url_for("admin.requests"))
 
-# view models
+# Displays all laptop models available in the system.
 @admin.route("/laptops")
 @login_required
 def laptops():
@@ -153,7 +163,7 @@ def laptops():
         laptops=laptops
     )
 
-#add Models
+# admin can add new laptop Models
 @admin.route("/laptops/add", methods=["GET", "POST"])
 @login_required
 def add_laptop():
@@ -181,7 +191,7 @@ def add_laptop():
         form=form,
         title="Add Laptop Model"
     )
-
+# admin can edit existing laptop Models
 @admin.route("/laptops/<int:laptop_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_laptop(laptop_id):
@@ -211,7 +221,7 @@ def edit_laptop(laptop_id):
         title="Edit Laptop Model"
     )
 
-
+# Retires a laptop model instead of deleting it.
 @admin.route("/laptops/<int:laptop_id>/retire")
 @login_required
 def retire_laptop(laptop_id):
@@ -229,7 +239,7 @@ def retire_laptop(laptop_id):
 
     return redirect(url_for("admin.laptops"))
 
-
+# Displays all Smart Locker cells and their current laptop/status.
 @admin.route("/locker")
 @login_required
 def locker():
@@ -247,7 +257,8 @@ def locker():
     )
 
 
-
+# admin can edit locker cells.
+# Admins can change the assigned laptop or set the cell to Empty.
 @admin.route("/locker/cell/<int:cell_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_locker_cell(cell_id):
@@ -293,6 +304,8 @@ def edit_locker_cell(cell_id):
         cell=cell
     )
 
+# Displays all users and their currently assigned laptop.
+# Sorted by most recently updated users first.
 @admin.route("/users")
 @login_required
 def users():

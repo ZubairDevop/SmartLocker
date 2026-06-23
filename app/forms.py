@@ -1,3 +1,4 @@
+# flask_wtf supports CSRF protection along with with wtforms
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, InputRequired, Email, ValidationError
@@ -9,6 +10,7 @@ from app.constants import (
     PRIORITY_HIGH
 )
 
+# validation stuctured so only cgi email address is accepted
 def validate_cgi_email(form, field):
 
     email = field.data.lower().strip()
@@ -19,7 +21,7 @@ def validate_cgi_email(form, field):
             "Please use your CGI email address."
         )
     
-
+# login form, email must be in valid format
 class LoginForm(FlaskForm):
 
     email = StringField(
@@ -31,6 +33,7 @@ class LoginForm(FlaskForm):
         ]
     )
 
+# password autnetication
     password = PasswordField(
         "Password",
         validators=[DataRequired()]
@@ -38,7 +41,7 @@ class LoginForm(FlaskForm):
 
     submit = SubmitField("Login")
 
-
+# a class is created to to support laptop replacement. user can only select like for like laptop. 
 class ReplacementRequestForm(FlaskForm):
 
     requested_category = SelectField(
@@ -50,6 +53,7 @@ class ReplacementRequestForm(FlaskForm):
         validators=[DataRequired()]
     )
 
+# description length restricted so only can add useful information
     issue_description = TextAreaField(
         "Describe the laptop issue",
         validators=[
@@ -58,6 +62,7 @@ class ReplacementRequestForm(FlaskForm):
         ]
     )
 
+# user select priority
     priority = SelectField(
         "Priority",
         choices=[
@@ -70,7 +75,7 @@ class ReplacementRequestForm(FlaskForm):
 
     submit = SubmitField("Submit Request")
 
-
+# form for admin to add or edit laptop model
 class LaptopModelForm(FlaskForm):
 
     manufacturer = StringField(
@@ -94,7 +99,7 @@ class LaptopModelForm(FlaskForm):
 
     submit = SubmitField("Save")
 
-
+# admin form to manage locker cell
 class LockerCellForm(FlaskForm):
 
     laptop_id = SelectField(
@@ -103,6 +108,7 @@ class LockerCellForm(FlaskForm):
         validators=[InputRequired()]
     )
 
+# admin to update locker cell status
     status = SelectField(
         "Cell Status",
         choices=[

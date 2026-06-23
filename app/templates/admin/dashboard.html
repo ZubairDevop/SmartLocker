@@ -1,3 +1,4 @@
+<!-- Inherit common application layout -->
 {% extends "base.html" %}
 
 {% block title %}
@@ -8,6 +9,7 @@ Admin Dashboard | CGI Smart Locker
 
 <h2 class="mb-4">Admin Dashboard</h2>
 
+<!-- Display logged-in administrator information -->
 <p class="lead">
     {{ current_user.first_name }} {{ current_user.last_name }}
 </p>
@@ -16,8 +18,10 @@ Admin Dashboard | CGI Smart Locker
     {{ current_user.department }}
 </p>
 
+<!-- Request statistics -->
 <div class="row g-4">
 
+    <!-- Pending requests awaiting approval -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -27,6 +31,7 @@ Admin Dashboard | CGI Smart Locker
         </div>
     </div>
 
+    <!-- Requests ready for collection -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -36,6 +41,7 @@ Admin Dashboard | CGI Smart Locker
         </div>
     </div>
 
+    <!-- Completed replacement requests -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -46,9 +52,10 @@ Admin Dashboard | CGI Smart Locker
     </div>
 
 </div>
-
+<!-- Locker statistics -->
 <div class="row g-4 mt-2">
 
+     <!-- Available replacement laptops -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -58,6 +65,7 @@ Admin Dashboard | CGI Smart Locker
         </div>
     </div>
 
+    <!-- Reserved locker cells -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -67,6 +75,7 @@ Admin Dashboard | CGI Smart Locker
         </div>
     </div>
 
+    <!-- Cells containing faulty laptops -->
     <div class="col-md-4">
         <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -78,15 +87,23 @@ Admin Dashboard | CGI Smart Locker
 
 </div>
 
+<!-- Quick access navigation -->
 <div class="card shadow-sm border-0 mt-4">
 
     <div class="card-body">
 
         <h4>Quick Actions</h4>
 
+        <!-- Navigate to request management -->
         <a href="{{ url_for('admin.requests') }}" class="btn btn-primary me-2 mt-2">Manage Requests</a>
+        
+        <!-- Navigate to laptop management -->
         <a href="{{ url_for('admin.laptops') }}" class="btn btn-outline-primary me-2 mt-2">Manage Laptop Models</a>
+        
+        <!-- Navigate to locker management -->
         <a href="{{ url_for('admin.locker') }}" class="btn btn-outline-primary me-2 mt-2">Manage Smart Locker</a>
+        
+        <!-- Navigate to user records -->
         <a href="{{ url_for('admin.users') }}" class="btn btn-outline-primary mt-2">Users Record</a>
     </div>
 

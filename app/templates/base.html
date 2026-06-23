@@ -1,3 +1,4 @@
+<!-- Base template shared across the entire Smart Locker application -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,22 +7,29 @@
     <meta charset="UTF-8">
     <title>{% block title %}CGI Smart Locker{% endblock %}</title>
 
+    <!-- Responsive design support -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Bootstrap CSS framework -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
+    <!-- Bootstrap Icons library -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 
 </head>
 
+
+
 <body class="bg-light">
 
+<!-- Main navigation bar -->    
 <nav class="navbar navbar-expand-lg">
 
 
     <div class="container">
 
+         <!-- Application logo and home page link -->
         <a class="navbar-brand fw-bold" href="{{ url_for('main.home') }}">
             
             <span style="color:#e31937; font-size:60px;">CGI</span> Smart Locker
@@ -32,6 +40,7 @@
 
             <ul class="navbar-nav ms-auto align-items-center">
 
+    <!-- Display navigation options based on authentication status -->
     {% if current_user.is_authenticated %}
 
         <li class="nav-item me-4">
@@ -45,8 +54,10 @@
 
         </li>
 
+        <!-- Role Based Navigation -->
         {% if current_user.role == "Admin" %}
 
+        <!-- Admin dashboard link -->
             <li class="nav-item">
 
                 <a class="nav-link fw-semibold"
@@ -60,6 +71,7 @@
 
         {% else %}
 
+          <!-- user dashboard link -->
             <li class="nav-item">
 
                 <a class="nav-link fw-semibold"
@@ -73,12 +85,14 @@
 
         {% endif %}
 
+         <!-- Logout option -->
         <li class="nav-item">
 
             <a class="nav-link text-danger fw-semibold"
-               href="{{ url_for('auth.logout') }}">
+                href="{{ url_for('auth.logout') }}"
+                data-confirm="Are you sure you want to logout?">
 
-                Logout
+                    Logout
 
             </a>
 
@@ -86,6 +100,7 @@
 
     {% else %}
 
+        <!-- Login option for unauthenticated users -->
         <li class="nav-item">
 
             <a class="nav-link fw-semibold"
@@ -111,6 +126,7 @@
 
 <main class="container mt-4">
 
+    <!-- Display flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
 
@@ -125,6 +141,7 @@
         {% endif %}
     {% endwith %}
 
+     <!-- Page-specific content inserted here -->
     {% block content %}
     {% endblock %}
 
@@ -134,7 +151,151 @@
     <small>© 2026 CGI Smart Locker Management System</small>
 </footer>
 
+ <!-- Page-specific content inserted here -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Reusable Bootstrap Confirmation Modal
+     Used throughout the application to confirm actions
+     such as logout, approve request, reject request,
+     retire laptop and form submissions -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+
+    <!-- Centre modal on screen -->
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+             <!-- Modal header using CGI branding colour -->
+            <div style="background-color:#e31937; color:white;">
+
+                <h6 class="modal-title">
+                    Confirm Action
+                </h6>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p id="confirmMessage">
+                    Are you sure?
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                 <!-- Cancel closes modal without performing action -->
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                 <!-- Confirm executes selected action -->
+                <button type="button"
+                        class="btn btn-primary"
+                        id="confirmButton">
+
+                    Confirm
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// Wait until page is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+
+     // Stores the action waiting for user confirmation
+    let pendingAction = null;
+
+    // Get modal element from page
+    const modalElement =
+        document.getElementById("confirmModal");
+
+    // Create Bootstrap modal object
+    const modal =
+        new bootstrap.Modal(modalElement);
+
+    // Dynamic message area inside modal
+    const confirmMessage =
+        document.getElementById("confirmMessage");
+
+    // Confirm button inside modal
+    const confirmButton =
+        document.getElementById("confirmButton");
+
+    // Find all elements that require confirmation
+    document.querySelectorAll("[data-confirm]")
+        .forEach(function(element) {
+
+        // Handle form submissions
+        if (element.tagName.toLowerCase() === "form") {
+
+            element.addEventListener("submit", function(event) {
+                
+                // Prevent immediate submission
+                event.preventDefault();
+
+                // Save form submission action
+                pendingAction = () => element.submit();
+
+                // Load custom confirmation message
+                confirmMessage.textContent =
+                    element.dataset.confirm;
+
+                modal.show();
+
+            });
+
+        } else {
+
+            // Handle links and buttons
+            element.addEventListener("click", function(event) {
+
+                // Prevent immediate navigation
+                event.preventDefault();
+
+                // Save navigation action
+                pendingAction = () =>
+                    window.location.href = element.href;
+
+                // Load custom confirmation message
+                confirmMessage.textContent =
+                    element.dataset.confirm;
+
+                modal.show();
+
+            });
+
+        }
+
+    });
+
+    // Execute action after user clicks Confirm
+    confirmButton.addEventListener("click", function() {
+
+        modal.hide();
+
+        // Execute saved action
+        if (pendingAction) {
+            pendingAction();
+        }
+
+    });
+
+});
+
+</script>
 
 </body>
 

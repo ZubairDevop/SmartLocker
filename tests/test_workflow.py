@@ -56,3 +56,6 @@ def test_logged_in_user_can_access_dashboard():
 
     assert response.status_code == 200
     assert b"User Dashboard" in response.data
+
+    # to run test type  python -m pytest on terminal when in virtual envoirment
+    # Github actions will run this automatically

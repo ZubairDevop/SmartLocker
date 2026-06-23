@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+<!-- Extends the shared base template used across the application -->
+ {% extends "base.html" %}
 
 {% block title %}
 Login | Smart Locker
@@ -6,6 +7,7 @@ Login | Smart Locker
 
 {% block content %}
 
+<!-- Bootstrap used to for centre login card, heading and icon -->
 <div class="row justify-content-center">
 
     <div class="col-md-5">
@@ -18,26 +20,37 @@ Login | Smart Locker
                     <i class="bi bi-person-lock"></i>
                     Login
                 </h3>
-
+<!-- Login form submitted using POST method and Generates hidden CSRF token for security -->
                 <form method="POST">
 
                     {{ form.hidden_tag() }}
-
+                    
+<!-- Email address input field -->
                     <div class="mb-3">
                         {{ form.email.label(class="form-label") }}
                         {{ form.email(class="form-control") }}
-                    </div>
 
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control") }}
-                         {% for error in form.email.errors %}
-                            <div class="text-danger">
+<!-- Display email validation errors -->
+                        {% for error in form.email.errors %}
+                            <div class="text-danger small mt-1">
                                 {{ error }}
                             </div>
                         {% endfor %}
                     </div>
 
+                    <!-- Password input field -->
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control") }}
+
+                        {% for error in form.password.errors %}
+                            <div class="text-danger small mt-1">
+                                 {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Login button -->
                     <div class="d-grid">
                         {{ form.submit(class="btn btn-primary") }}
                     </div>
