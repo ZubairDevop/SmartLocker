@@ -82,13 +82,6 @@ These are only predefined users and admins, there no registration form so cannot
 app is host via Render and can be found on https://smartlocker-fb15.onrender.com
 GitHub Repository - https://github.com/ZubairDevop/SmartLocker.git
 
-Author
-Zubair Ahmad
-BSc (Hons) Digital and Technology Solutions
-CGI UK
-Level 6 Software Engineering & DevOps Project
-2026
-
 
 
 
